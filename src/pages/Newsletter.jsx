@@ -14,14 +14,14 @@ import {
 } from "../components/utils/supabase";
 
 const COUNTRY_IMAGES = {
-  "Australia": "https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&q=80&w=1600&h=600",
-  "Japan": "https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&q=80&w=1600&h=600",
-  "Hong Kong": "https://images.unsplash.com/photo-1507941097613-9f2157b69235?auto=format&fit=crop&q=80&w=1600&h=600",
-  "Singapore": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&q=80&w=1600&h=600",
-  "Malaysia": "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&q=80&w=1600&h=600",
-  "Indonesia": "https://images.unsplash.com/photo-1559628129-67cf63b72248?auto=format&fit=crop&q=80&w=1600&h=600",
-  "Thailand": "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&q=80&w=1600&h=600",
-  "Philippines": "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&q=80&w=1600&h=600"
+  "australia": "https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&q=80&w=1600&h=600",
+  "japan": "https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&q=80&w=1600&h=600",
+  "hong kong": "https://images.unsplash.com/photo-1507941097613-9f2157b69235?auto=format&fit=crop&q=80&w=1600&h=600",
+  "singapore": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&q=80&w=1600&h=600",
+  "malaysia": "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&q=80&w=1600&h=600",
+  "indonesia": "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&q=80&w=1600&h=600",
+  "thailand": "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&q=80&w=1600&h=600",
+  "philippines": "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&q=80&w=1600&h=600"
 };
 
 const DEFAULT_BANNER = "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1600&h=600";
@@ -192,11 +192,16 @@ export default function Newsletter() {
       {/* Logo and Header */}
       <div className="bg-white shadow-sm py-6 px-4">
         <div className="container mx-auto max-w-5xl">
-          <div className="flex items-center mb-4">
-            <div className="bg-indigo-600 text-white h-10 w-10 flex items-center justify-center rounded-full">
-              <span className="text-lg font-bold">N</span>
-            </div>
-            <span className="ml-2 text-xl font-bold text-indigo-900">NewsAnalyst</span>
+          <div className="flex items-center justify-center mb-10 border-b-2 p-4">
+            <img
+              src="/glnt-asia-logo.jpg"
+              alt="GLNT ASIA MARKET INTELLIGENCE"
+              className="h-10 w-10 object-contain"
+            />
+            <span className="font-josefin text-2xl ml-1 sm:text-3xl md:text-4xl">
+              <span className="font-bold text-gray-800">GLNT</span>
+              <span className="text-sky-700 font-normal">ELLIGENCE</span>
+            </span>
           </div>
           <h2 className="text-sm font-medium text-indigo-600 uppercase tracking-wider mb-2">Banking Sector News</h2>
           <h1 className="text-2xl md:text-3xl font-bold mb-1">{title}</h1>
@@ -212,7 +217,7 @@ export default function Newsletter() {
         <img
           src={activeTab === "all" ? DEFAULT_BANNER : getCountryImage(activeTab)}
           alt={`Banking in ${activeTab === "all" ? "Asia Pacific" : activeTab}`}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-center"
         />
       </div>
       
@@ -230,7 +235,7 @@ export default function Newsletter() {
           onValueChange={setActiveTab}
           className="mb-8"
         >
-          <TabsList className="mb-6 flex flex-wrap gap-2">
+          <TabsList className="mb-6 flex flex-wrap gap-2 h-auto">
             <TabsTrigger value="all" className="bg-white data-[state=active]:bg-indigo-100">
               All Regions
             </TabsTrigger>
@@ -241,7 +246,7 @@ export default function Newsletter() {
                 className="bg-white data-[state=active]:bg-indigo-100"
               >
                 <MapPin className="h-4 w-4 mr-1" />
-                {country}
+                {country.toUpperCase()}
               </TabsTrigger>
             ))}
           </TabsList>
@@ -300,10 +305,15 @@ export default function Newsletter() {
         <div className="container mx-auto max-w-5xl px-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <div className="bg-indigo-600 text-white h-8 w-8 flex items-center justify-center rounded-full">
-                <span className="text-sm font-bold">N</span>
-              </div>
-              <span className="ml-2 text-sm font-bold text-indigo-900">NewsAnalyst</span>
+              <img
+                src="/glnt-asia-logo.jpg"
+                alt="GLNT ASIA MARKET INTELLIGENCE"
+                className="h-10 w-10 object-contain"
+              />
+              <span className="font-josefin text-2xl ml-1 sm:text-3xl md:text-4xl">
+                <span className="font-bold text-gray-800">GLNT</span>
+                <span className="text-sky-700 font-normal">ELLIGENCE</span>
+              </span>
             </div>
             <div className="text-sm text-gray-500">
               Published on {date}

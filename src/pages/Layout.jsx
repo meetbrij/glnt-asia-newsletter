@@ -20,6 +20,7 @@ export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const [isNewsLetterPage, setIsNewsletterPage] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -28,6 +29,7 @@ export default function Layout({ children, currentPageName }) {
         setUser(userData);
         
         // Redirect based on role if on wrong page
+        console.log("page name: ", currentPageName);
         if (userData.role === "reader" && !currentPageName.startsWith("Newsletter")) {
           navigate(createPageUrl("Newsletter"));
         }
@@ -63,10 +65,14 @@ export default function Layout({ children, currentPageName }) {
   const [currentView, setCurrentView] = useState("analyst");
 
   useEffect(() => {
-    if (user) {
-      setCurrentView(user.role || "analyst");
+    // if (user) {
+    //   setCurrentView(user.role || "analyst");
+    // }
+    console.log("page name: ", currentPageName);
+    if (currentPageName === "Newsletter") {
+      setIsNewsletterPage(true);
     }
-  }, [user]);
+  }, []);
 
   // Loading state
   if (loading) {
@@ -96,14 +102,14 @@ export default function Layout({ children, currentPageName }) {
   return (
     <div className="min-h-screen flex bg-gray-50">
       {/* Sidebar */}
-      <aside className="w-[256px] bg-[#e8eeff] flex-shrink-0 border-r border-indigo-100 fixed h-full overflow-auto">
+      {!isNewsLetterPage ? (<aside className="w-[256px] bg-[#e8eeff] flex-shrink-0 border-r border-indigo-100 fixed h-full overflow-auto">
         <div className="p-4">
           {/* Logo */}
           <div className="flex items-center mb-4">
             <div className="bg-indigo-600 text-white h-10 w-10 flex items-center justify-center rounded-full">
               <span className="text-lg font-bold">N</span>
             </div>
-            <span className="ml-2 text-xl font-bold text-indigo-900">NewsAnalyst</span>
+            <span className="ml-2 text-xl font-bold text-indigo-900">GLNTelligence</span>
           </div>
           
           {/* Workspace Title */}
@@ -188,10 +194,11 @@ export default function Layout({ children, currentPageName }) {
             </Button>
           </div>
         </div>
-      </aside>
+      </aside>) : (<></>)}
       
       {/* Main Content */}
-      <main className="ml-[256px] flex-1 min-h-screen overflow-auto">
+      <main className={`flex-1 min-h-screen overflow-auto
+          ${isNewsLetterPage ? '' : 'ml-[256px]'}`}>
         {children}
       </main>
     </div>

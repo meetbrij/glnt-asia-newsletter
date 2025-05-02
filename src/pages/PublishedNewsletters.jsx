@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { AlertCircle, Book, Calendar, Eye, Loader2, Mail, Plus } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -14,6 +14,7 @@ export default function PublishedNewsletters() {
   const [newsletters, setNewsletters] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showCountryCount, setShowCountryCount] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,6 +24,7 @@ export default function PublishedNewsletters() {
   const loadNewsletters = async () => {
     setIsLoading(true);
     setError(null);
+    setShowCountryCount(false);
     
     try {
       const data = await fetchNewsletters();
@@ -120,11 +122,11 @@ export default function PublishedNewsletters() {
                 transition={{ duration: 0.3 }}
               >
                 <div className="bg-white shadow rounded-lg overflow-hidden">
-                  <div className="relative aspect-video bg-gray-100">
+                  <div className="relative aspect-[4] bg-gray-100">
                     <img
                       src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
                       alt="Banking"
-                      className="w-full h-1/2 object-cover"
+                      className="w-full h-full object-cover"
                     />
                     <div className="absolute top-4 left-4 bg-white py-1 px-3 rounded-full shadow-sm">
                       <div className="flex items-center">
@@ -154,19 +156,14 @@ export default function PublishedNewsletters() {
                       {newsletter.description || "The latest news and technological advancements in the banking sector from across Asia-Pacific."}
                     </p>
                     
-                    <div className="bg-indigo-50 rounded-lg p-3 mb-4">
+                    {showCountryCount ? (<div className="bg-indigo-50 rounded-lg p-3 mb-4">
                       <h4 className="text-sm font-medium text-indigo-800 mb-2">Articles by Country:</h4>
                       <div className="flex flex-wrap gap-2">
                         {getArticlesCountry(newsletter)}
                       </div>
-                    </div>
+                    </div>) : <div></div>}
                     
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center text-gray-500">
-                        <Eye className="h-4 w-4 mr-1" />
-                        <span>{newsletter.views || 0} views</span>
-                      </div>
-                      
+                    <div className="flex items-center justify-end">  
                       <Button 
                         variant="outline"
                         className="text-indigo-600 border-indigo-200 hover:bg-indigo-50"
