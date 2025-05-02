@@ -196,7 +196,7 @@ export default function Newsletter() {
             <img
               src="/glnt-asia-logo.jpg"
               alt="GLNT ASIA MARKET INTELLIGENCE"
-              className="h-10 w-10 object-contain"
+              className="h-7 w-7 sm:h-10 sm:w-10 object-contain"
             />
             <span className="font-josefin text-2xl ml-1 sm:text-3xl md:text-4xl">
               <span className="font-bold text-gray-800">GLNT</span>
@@ -217,7 +217,7 @@ export default function Newsletter() {
         <img
           src={activeTab === "all" ? DEFAULT_BANNER : getCountryImage(activeTab)}
           alt={`Banking in ${activeTab === "all" ? "Asia Pacific" : activeTab}`}
-          className="w-full h-full object-center"
+          className="w-full h-full object-cover"
         />
       </div>
       
@@ -308,9 +308,9 @@ export default function Newsletter() {
               <img
                 src="/glnt-asia-logo.jpg"
                 alt="GLNT ASIA MARKET INTELLIGENCE"
-                className="h-10 w-10 object-contain"
+                className="h-5 w-5 sm:h-10 sm:w-10 object-contain"
               />
-              <span className="font-josefin text-2xl ml-1 sm:text-3xl md:text-4xl">
+              <span className="font-josefin text-base ml-1 sm:text-2xl md:text-2xl">
                 <span className="font-bold text-gray-800">GLNT</span>
                 <span className="text-sky-700 font-normal">ELLIGENCE</span>
               </span>
