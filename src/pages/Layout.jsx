@@ -105,11 +105,16 @@ export default function Layout({ children, currentPageName }) {
       {!isNewsLetterPage ? (<aside className="w-[256px] bg-[#e8eeff] flex-shrink-0 border-r border-indigo-100 fixed h-full overflow-auto">
         <div className="p-4">
           {/* Logo */}
-          <div className="flex items-center mb-4">
-            <div className="bg-indigo-600 text-white h-10 w-10 flex items-center justify-center rounded-full">
-              <span className="text-lg font-bold">N</span>
-            </div>
-            <span className="ml-2 text-xl font-bold text-indigo-900">GLNTelligence</span>
+          <div className="flex items-center mb-4 p-4 bg-white">
+            <img
+              src="/glnt-asia-logo.jpg"
+              alt="GLNT ASIA MARKET INTELLIGENCE"
+              className="h-7 w-7 object-contain"
+            />
+            <span className="font-josefin ml-1 sm:text-3xl md:text-xl">
+              <span className="font-bold text-gray-800">GLNT</span>
+              <span className="text-sky-700 font-normal">ELLIGENCE</span>
+            </span>
           </div>
           
           {/* Workspace Title */}
