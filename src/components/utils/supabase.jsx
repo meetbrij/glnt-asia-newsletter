@@ -130,51 +130,17 @@ export async function createNewsletter(newsletterData, articleIds) {
  * @param {string} newsletterId - Newsletter ID
  * @returns {Array} - List of articles in the newsletter
  */
-export async function getNewsletterArticles(newsletterId) {
-  const query = `
-    SELECT 
-      id,
-      title,
-      company,
-      country,
-      source,
-      summary,
-      category,
-      url,
-      created_date,
-      published_date,
-      selected_for_newsletter,
-      published_in_newsletter,
-      newsletter_id,
-      views
-    FROM apac_article
-    WHERE newsletter_id = $1
-    ORDER BY created_date DESC
-  `;
-  
-  const result = await executeQuery(query, [newsletterId]);
-  
-  if (!result.success) {
-    throw new Error(result.error || "Failed to fetch newsletter articles");
-  }
-  
-  // Transform and return the articles
-  return result.data.map(article => ({
-    id: article.id,
-    title: article.title || "",
-    company: article.company || "",
-    country: article.country || "",
-    source: article.source || "",
-    summary: article.summary || "",
-    category: article.category || "",
-    url: article.url || "",
-    created_date: article.created_date || new Date().toISOString(),
-    date: article.published_date || new Date().toISOString(),
-    selectedForNewsletter: article.selected_for_newsletter || false,
-    publishedInNewsletter: article.published_in_newsletter || false,
-    newsletterId: article.newsletter_id || null,
-    views: article.views || 0
-  }));
+export async function getNewsletterArticles(articleIds) {
+  let { data: news_articles, error } = await QuerySupabase
+    .from('apac_article')
+    .select('*')
+    .in('id', articleIds); // articleIds = [2, 33, 22, 54, 3, 7]
+
+    if (error) {
+      console.error('Fetch error:', error.message);
+      throw new Error("Failed to fetch articles: " + error.message);
+    }
+    return news_articles;
 }
 
 /**

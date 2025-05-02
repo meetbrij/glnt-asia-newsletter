@@ -1,13 +1,11 @@
-
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
-import { AlertCircle, Calendar, MapPin, Tag, Loader2, ExternalLink } from "lucide-react";
+import { AlertCircle, Calendar, MapPin, Tag, Loader2, ExternalLink, Building } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Separator } from "@/components/ui/separator";
 import { 
   fetchNewsletters, 
   getNewsletterArticles,
@@ -18,7 +16,7 @@ import {
 const COUNTRY_IMAGES = {
   "Australia": "https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&q=80&w=1600&h=600",
   "Japan": "https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&q=80&w=1600&h=600",
-  "Hong Kong": "https://images.unsplash.com/photo-1576788903709-5c8b6fadc3f0?auto=format&fit=crop&q=80&w=1600&h=600",
+  "Hong Kong": "https://images.unsplash.com/photo-1507941097613-9f2157b69235?auto=format&fit=crop&q=80&w=1600&h=600",
   "Singapore": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&q=80&w=1600&h=600",
   "Malaysia": "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&q=80&w=1600&h=600",
   "Indonesia": "https://images.unsplash.com/photo-1559628129-67cf63b72248?auto=format&fit=crop&q=80&w=1600&h=600",
@@ -31,7 +29,6 @@ const DEFAULT_BANNER = "https://images.unsplash.com/photo-1486406146926-c627a92a
 // This component is used for the standalone newsletter view
 export default function Newsletter() {
   const [newsletter, setNewsletter] = useState(null);
-  const [articles, setArticles] = useState([]);
   const [groupedArticles, setGroupedArticles] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -64,7 +61,7 @@ export default function Newsletter() {
       }
       
       // Find the requested newsletter
-      const selectedNewsletter = newsletters.find(n => n.id === newsletterId);
+      const selectedNewsletter = newsletters.find(n => n.id == newsletterId);
       
       if (!selectedNewsletter) {
         setError("Newsletter not found");
@@ -81,13 +78,11 @@ export default function Newsletter() {
       }
       
       // Load articles for this newsletter
-      const newsletterArticles = await getNewsletterArticles(newsletterId);
+      const newsletterArticles = await getNewsletterArticles(selectedNewsletter.articles);
       
       if (!Array.isArray(newsletterArticles)) {
         throw new Error("Failed to fetch newsletter articles");
       }
-      
-      setArticles(newsletterArticles);
       
       // Group by country
       const grouped = {};
@@ -127,6 +122,21 @@ export default function Newsletter() {
     } catch (e) {
       return "Unknown date";
     }
+  };
+
+  const getCountryColor = (country) => {
+    const colors = {
+      "australia": "bg-emerald-100 text-emerald-800 border-emerald-200",
+      "japan": "bg-red-100 text-red-800 border-red-200",
+      "hong kong": "bg-purple-100 text-purple-800 border-purple-200",
+      "singapore": "bg-blue-100 text-blue-800 border-blue-200",
+      "malaysia": "bg-yellow-100 text-yellow-800 border-yellow-200",
+      "indonesia": "bg-orange-100 text-orange-800 border-orange-200",
+      "thailand": "bg-pink-100 text-pink-800 border-pink-200",
+      "philippines": "bg-indigo-100 text-indigo-800 border-indigo-200"
+    };
+    
+    return colors[country] || "bg-gray-100 text-gray-800 border-gray-200";
   };
 
   const getCategoryColor = (category) => {
@@ -257,6 +267,8 @@ export default function Newsletter() {
                         article={article}
                         onView={() => handleArticleView(article.id)}
                         getCategoryColor={getCategoryColor}
+                        getCountryColor={getCountryColor}
+                        formatDate={formatDate}
                       />
                     ))}
                   </div>
@@ -274,6 +286,8 @@ export default function Newsletter() {
                     article={article} 
                     onView={() => handleArticleView(article.id)}
                     getCategoryColor={getCategoryColor}
+                    getCountryColor={getCountryColor}
+                    formatDate={formatDate}
                   />
                 ))}
               </div>
@@ -301,7 +315,8 @@ export default function Newsletter() {
   );
 }
 
-function ArticleCard({ article, onView, getCategoryColor }) {
+function ArticleCard({ article, onView, getCategoryColor, getCountryColor, formatDate }) {
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -311,10 +326,25 @@ function ArticleCard({ article, onView, getCategoryColor }) {
       <div className="bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow">
         <div className="flex flex-col space-y-4">
           <h2 className="text-xl font-bold mb-2">{article.title}</h2>
+
+          <div className="flex items-center gap-1 mb-3">
+            <Calendar className="h-4 w-4 text-gray-400" />
+            <span className="text-sm text-gray-500">{formatDate(article.created_date)}</span>
+          </div>
           
           <p className="text-gray-700 mb-4">{article.summary}</p>
           
           <div className="flex flex-wrap gap-2 mb-4">
+            <Badge variant="outline"  className="flex items-center gap-1">
+              <Building className="h-4 w-4 text-gray-400" />
+              <span className="text-sm font-medium">{article.company}</span>
+            </Badge>
+
+            <Badge variant="outline" className={`${getCountryColor(article.country)}`}>
+              <MapPin className="h-3 w-3 mr-1" />
+              {article.country.toUpperCase()}
+            </Badge>
+
             {article.category && (
               <Badge className={getCategoryColor(article.category)}>
                 <Tag className="h-3 w-3 mr-1" />
@@ -323,11 +353,7 @@ function ArticleCard({ article, onView, getCategoryColor }) {
             )}
           </div>
           
-          <div className="flex justify-between items-center">
-            <span className="text-gray-600 text-sm">
-              Source: {article.source || "Financial Times"}
-            </span>
-            
+          <div className="flex justify-end items-center">
             <Button
               variant="outline"
               size="sm"
@@ -336,7 +362,7 @@ function ArticleCard({ article, onView, getCategoryColor }) {
               className="text-indigo-600 hover:text-indigo-800"
             >
               <a
-                href={article.url || "#"}
+                href={article.source || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
               >

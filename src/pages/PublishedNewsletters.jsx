@@ -72,7 +72,7 @@ export default function PublishedNewsletters() {
         <h1 className="text-2xl font-bold text-gray-900">Published Newsletters</h1>
         <Button 
           className="bg-indigo-600 hover:bg-indigo-700"
-          onClick={() => navigate(createPageUrl("SelectedNews"))}
+          onClick={() => navigate(createPageUrl("AnalystDashboard"))}
         >
           <Plus className="mr-2 h-4 w-4" />
           Create New Newsletter
@@ -104,7 +104,7 @@ export default function PublishedNewsletters() {
               Start by selecting articles and publishing your first newsletter.
             </p>
             <Button 
-              onClick={() => navigate(createPageUrl("SelectedNews"))}
+              onClick={() => navigate(createPageUrl("AnalystDashboard"))}
               className="bg-indigo-600 hover:bg-indigo-700"
             >
               Create Your First Newsletter
@@ -124,7 +124,7 @@ export default function PublishedNewsletters() {
                     <img
                       src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
                       alt="Banking"
-                      className="w-full h-full object-cover"
+                      className="w-full h-1/2 object-cover"
                     />
                     <div className="absolute top-4 left-4 bg-white py-1 px-3 rounded-full shadow-sm">
                       <div className="flex items-center">
@@ -142,7 +142,7 @@ export default function PublishedNewsletters() {
                         {newsletter.id % 2 === 0 ? "Weekly" : "Monthly"}
                       </Badge>
                       <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-200">
-                        {newsletter.articleCount || 0} articles
+                        {newsletter.articles.length || 0} articles
                       </Badge>
                     </div>
                     
