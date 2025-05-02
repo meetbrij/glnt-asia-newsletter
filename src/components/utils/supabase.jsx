@@ -25,20 +25,25 @@ export async function fetchArticles() {
       .select('*')
       .not('title', 'is', null)
       .neq('title', '')
-      // .order('date', { ascending: false })
       .order('selected_for_newsletter', { ascending: false });
 
     if (error) {
       console.error('Fetch error:', error.message);
       throw new Error("Failed to fetch articles: " + error.message);
-      // setError('Failed to load data. Please try again.');
-    } else {
-      // setSALES_APAC(apac_articles);
-      const initiallySelected = apac_articles
-        .filter((r) => r.selected_for_newsletter)
-        .map((r) => r.id);
-        console.error('initially selected:', initiallySelected);
-      // setSelectedIds(initiallySelected);
+    }
+    return apac_articles;
+}
+
+export async function fetchPublishedArticles() {
+  let { data: apac_articles, error } = await QuerySupabase
+      .from('apac_article')
+      .select('*')
+      .eq('published_in_newsletter', true)
+      .order('selected_for_newsletter', { ascending: false });
+
+    if (error) {
+      console.error('Fetch error:', error.message);
+      throw new Error("Failed to fetch articles: " + error.message);
     }
     return apac_articles;
 }
@@ -88,6 +93,13 @@ export async function fetchNewsletters() {
  * @returns {Object} - Created newsletter
  */
 export async function createNewsletter(newsletterData, articleIds) {
+
+  articleIds.map(async (a) => {
+    await QuerySupabase
+      .from('apac_article')
+      .update({ published_in_newsletter: true })
+      .eq('id', a);
+  });
 
   const { data: newsletter, error } = await QuerySupabase
     .from('newsletter')

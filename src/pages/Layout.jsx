@@ -122,7 +122,7 @@ export default function Layout({ children, currentPageName }) {
             <NavLink 
               to="SelectedNews" 
               icon={<CheckSquare className="w-5 h-5" />} 
-              label="Selected News" 
+              label="Published News" 
               current={currentPageName === "SelectedNews"}
             />
             <NavLink 

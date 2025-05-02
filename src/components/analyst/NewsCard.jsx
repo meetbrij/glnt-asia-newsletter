@@ -11,7 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-export default function NewsCard({ article, onSelect, isSelected }) {
+export default function NewsCard({ article, onSelect, isSelected, hideCheckbox=false }) {
   const formatDate = (dateString) => {
     try {
       return format(new Date(dateString || new Date()), "MMM d, yyyy");
@@ -55,12 +55,15 @@ export default function NewsCard({ article, onSelect, isSelected }) {
   return (
     <div className={`bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow border ${isSelected ? 'border-indigo-300 bg-indigo-50/20' : ''}`}>
       <div className="flex items-start gap-3">
-        <Checkbox
-          id={`article-${article.id}`}
-          checked={isSelected || article.selectedForNewsletter}
-          onCheckedChange={() => onSelect(article)}
-          className="mt-1 h-5 w-5 data-[state=checked]:bg-indigo-600 data-[state=checked]:border-indigo-600"
-        />
+
+        {!hideCheckbox && (
+          <Checkbox
+            id={`article-${article.id}`}
+            checked={isSelected || article.selectedForNewsletter}
+            onCheckedChange={() => onSelect(article)}
+            className="mt-1 h-5 w-5 data-[state=checked]:bg-indigo-600 data-[state=checked]:border-indigo-600"
+          />
+        )}
         
         <div className="flex-1">
           <h3 className="font-bold text-lg mb-2">{article.title}</h3>
