@@ -5,16 +5,6 @@
 import { QuerySupabase } from "./supabaseClient";
 
 /**
- * Execute a Supabase query with error handling
- * @param {string} query - SQL query to execute
- * @param {Array} params - Query parameters
- * @returns {Object} - Query result or empty array for data
- */
-export async function executeQuery(query, params = []) {
-  
-}
-
-/**
  * Fetch articles from apac_article table
  * @param {Object} filters - Optional filters for the query
  * @returns {Array} - List of articles
@@ -149,14 +139,10 @@ export async function getNewsletterArticles(articleIds) {
  * @returns {Object} - Updated newsletter
  */
 export async function incrementNewsletterViews(newsletterId) {
-  const query = `
-    UPDATE newsletter
-    SET views = COALESCE(views, 0) + 1
-    WHERE id = $1
-    RETURNING *
-  `;
-  
-  await executeQuery(query, [newsletterId]);
+  await QuerySupabase
+      .from('newsletter')
+      .increment('views', 1) // Increment 'views' by 1
+      .eq('id', newsletterId);
 }
 
 /**
@@ -165,14 +151,10 @@ export async function incrementNewsletterViews(newsletterId) {
  * @returns {Object} - Updated article
  */
 export async function incrementArticleViews(articleId) {
-  const query = `
-    UPDATE apac_article
-    SET views = COALESCE(views, 0) + 1
-    WHERE id = $1
-    RETURNING *
-  `;
-  
-  await executeQuery(query, [articleId]);
+  await QuerySupabase
+      .from('apac_article')
+      .increment('views', 1) // Increment 'views' by 1
+      .eq('id', articleId);
 }
 
 /**
@@ -181,24 +163,43 @@ export async function incrementArticleViews(articleId) {
  */
 export async function getAnalyticsData() {
   // Get total articles count
-  const totalArticlesQuery = `SELECT COUNT(*) as count FROM apac_article`;
-  const totalArticlesResult = await executeQuery(totalArticlesQuery);
-  const totalArticles = totalArticlesResult.success ? (totalArticlesResult.data[0]?.count || 0) : 0;
+  const { data1, error1, count: totalArticlesResult } = await QuerySupabase
+      .from('apac_article')
+      .select('*', { count: 'exact', head: true }) // `head: true` avoids fetching actual rows
+
+  if (error1) {
+    console.error('Error fetching count:', error1)
+  } else {
+    console.log('Row count:', data1, totalArticlesResult)
+  }
+  const totalArticles = totalArticlesResult;
   
   // Get selected articles count
-  const selectedArticlesQuery = `SELECT COUNT(*) as count FROM apac_article WHERE selected_for_newsletter = true`;
-  const selectedArticlesResult = await executeQuery(selectedArticlesQuery);
-  const selectedArticles = selectedArticlesResult.success ? (selectedArticlesResult.data[0]?.count || 0) : 0;
+  const { data2, error2, count: publishedArticlesResult } = await QuerySupabase
+    .from('apac_article')
+    .select('*', { count: 'exact', head: true })
+    .eq('published_in_newsletter', true)
+
+  if (error2) {
+    console.error('Error fetching count:', error2)
+  } else {
+    console.log('Count of published articles:', data2, publishedArticlesResult)
+  }
   
-  // Get published articles count
-  const publishedArticlesQuery = `SELECT COUNT(*) as count FROM apac_article WHERE published_in_newsletter = true`;
-  const publishedArticlesResult = await executeQuery(publishedArticlesQuery);
-  const publishedArticles = publishedArticlesResult.success ? (publishedArticlesResult.data[0]?.count || 0) : 0;
+  const publishedArticles = publishedArticlesResult;
   
   // Get newsletters count
-  const newslettersQuery = `SELECT COUNT(*) as count FROM newsletter`;
-  const newslettersResult = await executeQuery(newslettersQuery);
-  const publishedNewsletters = newslettersResult.success ? (newslettersResult.data[0]?.count || 0) : 0;
+  
+  const { data3, error3, count: newslettersResult } = await QuerySupabase
+    .from('newsletter')
+    .select('*', { count: 'exact', head: true })
+
+  if (error3) {
+    console.error('Error fetching count:', error3)
+  } else {
+    console.log('Total newsletters:', data3, newslettersResult)
+  }
+  const publishedNewsletters = newslettersResult;
   
   // Get articles by category
   const categoriesQuery = `
@@ -208,9 +209,8 @@ export async function getAnalyticsData() {
     GROUP BY category 
     ORDER BY count DESC
   `;
-  const categoriesResult = await executeQuery(categoriesQuery);
-  const categoriesData = categoriesResult.success ? 
-    categoriesResult.data.map(item => ({ name: item.category, count: item.count })) : [];
+
+  const categoriesData = [];
   
   // Get articles by country
   const countriesQuery = `
@@ -220,13 +220,11 @@ export async function getAnalyticsData() {
     GROUP BY country 
     ORDER BY count DESC
   `;
-  const countriesResult = await executeQuery(countriesQuery);
-  const countriesData = countriesResult.success ? 
-    countriesResult.data.map(item => ({ name: item.country, count: item.count })) : [];
+
+  const countriesData = [];
   
   return {
     totalArticles,
-    selectedArticles,
     publishedArticles, 
     publishedNewsletters,
     categoriesData,

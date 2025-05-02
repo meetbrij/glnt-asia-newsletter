@@ -9,7 +9,6 @@ import {
   TrendingUp,
   ArrowUp
 } from "lucide-react";
-import { format, subDays } from "date-fns";
 import { Card, CardContent } from "@/components/ui/card";
 import { BarChart, ResponsiveContainer, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -21,7 +20,6 @@ export default function ManagerDashboard() {
   const [error, setError] = useState(null);
   const [statsData, setStatsData] = useState({
     totalArticles: 0,
-    selectedArticles: 0,
     publishedArticles: 0,
     publishedNewsletters: 0,
     subscribers: 245
@@ -50,7 +48,6 @@ export default function ManagerDashboard() {
       // Set stats data
       setStatsData({
         totalArticles: data.totalArticles || 0,
-        selectedArticles: data.selectedArticles || 0,
         publishedArticles: data.publishedArticles || 0,
         publishedNewsletters: data.publishedNewsletters || 0,
         subscribers: data.subscribers || 0
@@ -106,9 +103,9 @@ export default function ManagerDashboard() {
           />
           
           <StatsCard 
-            title="Articles Selected"
+            title="Articles Published"
             icon={<FileText className="w-6 h-6 text-indigo-600" />}
-            value={`${statsData.selectedArticles} (${Math.round((statsData.selectedArticles / (statsData.totalArticles || 1)) * 100)}%)`}
+            value={`${statsData.publishedArticles} (${Math.round((statsData.publishedArticles / (statsData.totalArticles || 1)) * 100)}%)`}
             trend="+8% vs last month"
             trendIcon={<ArrowUp className="w-3 h-3" />}
             trendColor="text-green-500"

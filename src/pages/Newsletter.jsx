@@ -16,7 +16,7 @@ import {
 const COUNTRY_IMAGES = {
   "australia": "https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&q=80&w=1600&h=600",
   "japan": "https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&q=80&w=1600&h=600",
-  "hong kong": "https://images.unsplash.com/photo-1507941097613-9f2157b69235?auto=format&fit=crop&q=80&w=1600&h=600",
+  "hongkong": "https://images.unsplash.com/photo-1507941097613-9f2157b69235?auto=format&fit=crop&q=80&w=1600&h=600",
   "singapore": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&q=80&w=1600&h=600",
   "malaysia": "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&q=80&w=1600&h=600",
   "indonesia": "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&q=80&w=1600&h=600",
