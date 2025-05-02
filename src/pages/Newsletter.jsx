@@ -17,11 +17,11 @@ const COUNTRY_IMAGES = {
   "australia": "https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&q=80&w=1600&h=600",
   "japan": "https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&q=80&w=1600&h=600",
   "hongkong": "https://images.unsplash.com/photo-1507941097613-9f2157b69235?auto=format&fit=crop&q=80&w=1600&h=600",
-  "singapore": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&q=80&w=1600&h=600",
-  "malaysia": "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&q=80&w=1600&h=600",
-  "indonesia": "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&q=80&w=1600&h=600",
-  "thailand": "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&q=80&w=1600&h=600",
-  "philippines": "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&q=80&w=1600&h=600"
+  "singapore": "https://images.unsplash.com/photo-1694400996388-918679ad0fa1?auto=format&fit=crop&q=80&w=1600&h=600",
+  "malaysia": "https://images.unsplash.com/photo-1566914447826-bf04e54bf1be?auto=format&fit=crop&q=80&w=1600&h=600",
+  "indonesia": "https://images.unsplash.com/photo-1567320032761-8d7fb7a5aa4e?auto=format&fit=crop&q=80&w=1600&h=600",
+  "thailand": "https://images.unsplash.com/photo-1623637841657-2ad345b58e6a?auto=format&fit=crop&q=80&w=1600&h=600",
+  "philippines": "https://images.unsplash.com/photo-1501890664351-4ef399c1524f?auto=format&fit=crop&q=80&w=1600&h=600"
 };
 
 const DEFAULT_BANNER = "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1600&h=600";
