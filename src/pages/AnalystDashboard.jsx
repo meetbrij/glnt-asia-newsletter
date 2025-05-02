@@ -75,7 +75,7 @@ export default function AnalystDashboard() {
       setArticles(data);
       setFilteredArticles(data);
 
-      const selected = data.filter(a => a.selectedForNewsletter && !a.publishedInNewsletter);
+      const selected = data.filter(a => a.selected_for_newsletter);
       setSelectedArticles(selected || []);
     } catch (error) {
       setError("Failed to load articles. Please try again.");
