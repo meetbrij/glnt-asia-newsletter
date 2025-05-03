@@ -59,7 +59,7 @@ export default function NewsCard({ article, onSelect, isSelected, hideCheckbox=f
         {!hideCheckbox && (
           <Checkbox
             id={`article-${article.id}`}
-            checked={isSelected || article.selectedForNewsletter}
+            checked={isSelected || article.selected_for_newsletter}
             onCheckedChange={() => onSelect(article)}
             className="mt-1 h-5 w-5 data-[state=checked]:bg-indigo-600 data-[state=checked]:border-indigo-600"
           />

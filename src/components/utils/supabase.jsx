@@ -48,7 +48,7 @@ export async function updateArticle(id, data) {
 
   let { data: updated_article, error } = await QuerySupabase
     .from('apac_article')
-    .update({ selected_for_newsletter: data.selectedForNewsletter })
+    .update({ selected_for_newsletter: data.selected_for_newsletter })
     .eq('id', id)
     .select();
   

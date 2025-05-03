@@ -9,7 +9,6 @@ import { createPageUrl } from "@/utils";
 import NewsCard from "../components/analyst/NewsCard";
 import { 
   fetchPublishedArticles, 
-  updateArticle, 
 } from "../components/utils/supabase";
 
 export default function SelectedNews() {
@@ -37,24 +36,6 @@ export default function SelectedNews() {
       setPublishedArticles([]);
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const handleArticleSelect = async (article) => {
-    if (!article || !article.id) return;
-    if (activeTab === "published") return; // Can't deselect published articles
-    
-    try {
-      // Update in Supabase
-      await updateArticle(article.id, {
-        selectedForNewsletter: !article.selectedForNewsletter
-      });
-      
-      // Refresh articles
-      await fetchSelectedArticles();
-    } catch (error) {
-      setError("Failed to update article. Please try again.");
-      console.error("Error updating article:", error);
     }
   };
 
@@ -105,8 +86,6 @@ export default function SelectedNews() {
               >
                 <NewsCard 
                   article={article} 
-                  onSelect={handleArticleSelect}
-                  isSelected={article.selectedForNewsletter}
                   hideCheckbox={true}
                 />
               </motion.div>

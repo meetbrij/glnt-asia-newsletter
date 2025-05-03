@@ -113,7 +113,7 @@ export default function AnalystDashboard() {
     }
     
     if (activeTab === "selected") {
-      result = result.filter(article => article.selectedForNewsletter);
+      result = result.filter(article => article.selected_for_newsletter);
     } else if (activeTab === "featured") {
       result = result.filter((_, index) => index % 3 === 0);
     }
@@ -148,7 +148,7 @@ export default function AnalystDashboard() {
     try {
       // Update article in Supabase
       await updateArticle(article.id, {
-        selectedForNewsletter: !article.selectedForNewsletter
+        selected_for_newsletter: !article.selected_for_newsletter
       });
       
       // Update local state
@@ -168,7 +168,7 @@ export default function AnalystDashboard() {
       setArticles(prev => {
         return prev.map(a => {
           if (a.id === article.id) {
-            return { ...a, selectedForNewsletter: !a.selectedForNewsletter };
+            return { ...a, selected_for_newsletter: !a.selected_for_newsletter };
           }
           return a;
         });
@@ -271,7 +271,7 @@ export default function AnalystDashboard() {
               <TabsTrigger value="selected">
                 Selected
                 <Badge className="ml-1 bg-indigo-500 hover:bg-indigo-600">
-                  {articles?.filter(a => a.selectedForNewsletter)?.length || 0}
+                  {articles?.filter(a => a.selected_for_newsletter)?.length || 0}
                 </Badge>
               </TabsTrigger>
               <TabsTrigger value="featured">Featured</TabsTrigger>
@@ -383,7 +383,7 @@ export default function AnalystDashboard() {
                   onSelect={handleArticleSelect}
                   isSelected={
                     selectedArticles?.some(a => a.id === article.id) || 
-                    article.selectedForNewsletter
+                    article.selected_for_newsletter
                   }
                 />
               </motion.div>

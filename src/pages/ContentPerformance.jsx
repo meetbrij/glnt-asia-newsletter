@@ -84,8 +84,8 @@ export default function ContentPerformance() {
 
     // Process publish distribution
     const published = articlesData.filter(a => a.publishedInNewsletter).length;
-    const selected = articlesData.filter(a => a.selectedForNewsletter && !a.publishedInNewsletter).length;
-    const notSelected = articlesData.filter(a => !a.selectedForNewsletter).length;
+    const selected = articlesData.filter(a => a.selected_for_newsletter && !a.publishedInNewsletter).length;
+    const notSelected = articlesData.filter(a => !a.selected_for_newsletter).length;
     
     setPublishDistribution([
       { name: 'Published', value: published },
@@ -101,9 +101,9 @@ export default function ContentPerformance() {
     if (filterBy === "published") {
       filtered = filtered.filter(a => a.publishedInNewsletter);
     } else if (filterBy === "selected") {
-      filtered = filtered.filter(a => a.selectedForNewsletter && !a.publishedInNewsletter);
+      filtered = filtered.filter(a => a.selected_for_newsletter && !a.publishedInNewsletter);
     } else if (filterBy === "not_selected") {
-      filtered = filtered.filter(a => !a.selectedForNewsletter);
+      filtered = filtered.filter(a => !a.selected_for_newsletter);
     }
     
     // Apply sorting
@@ -317,7 +317,7 @@ export default function ContentPerformance() {
                     <TableCell>
                       {article.publishedInNewsletter ? (
                         <Badge className="bg-green-100 text-green-800">Published</Badge>
-                      ) : article.selectedForNewsletter ? (
+                      ) : article.selected_for_newsletter ? (
                         <Badge className="bg-blue-100 text-blue-800">Selected</Badge>
                       ) : (
                         <Badge variant="outline">Not Selected</Badge>
