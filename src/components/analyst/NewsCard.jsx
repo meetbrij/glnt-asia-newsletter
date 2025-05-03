@@ -1,4 +1,3 @@
-import React from "react";
 import { 
   Building, 
   MapPin,
@@ -6,6 +5,7 @@ import {
   Calendar,
   ExternalLink
 } from "lucide-react";
+import { toTitleCase } from '@/utils'
 import { format } from "date-fns";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
@@ -70,7 +70,7 @@ export default function NewsCard({ article, onSelect, isSelected, hideCheckbox=f
           
           <div className="flex items-center gap-1 mb-3">
             <Calendar className="h-4 w-4 text-gray-400" />
-            <span className="text-sm text-gray-500">{formatDate(article.date)}</span>
+            <span className="text-sm text-gray-500">{article.published_date}</span>
           </div>
           
           <div className="flex items-center gap-1 mb-3">
@@ -87,9 +87,9 @@ export default function NewsCard({ article, onSelect, isSelected, hideCheckbox=f
             </Badge>
             
             {article.category && (
-              <Badge className={`${getCategoryColor(article.category)}`}>
+              <Badge className={`${getCategoryColor(toTitleCase(article.category))}`}>
                 <Tag className="h-3 w-3 mr-1" />
-                {article.category}
+                {toTitleCase(article.category)}
               </Badge>
             )}
           </div>

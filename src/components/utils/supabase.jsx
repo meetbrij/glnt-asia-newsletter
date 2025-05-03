@@ -15,6 +15,7 @@ export async function fetchArticles() {
       .select('*')
       .not('title', 'is', null)
       .neq('title', '')
+      .order('published_date', { ascending: false })
       .order('selected_for_newsletter', { ascending: false });
 
     if (error) {

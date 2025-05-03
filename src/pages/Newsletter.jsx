@@ -5,6 +5,7 @@ import { AlertCircle, Calendar, MapPin, Tag, Loader2, ExternalLink, Building } f
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { toTitleCase } from "@/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   fetchNewsletters, 
@@ -144,13 +145,13 @@ export default function Newsletter() {
       "Wealth Management": "bg-violet-100 text-violet-800",
       "Private Banking": "bg-blue-100 text-blue-800",
       "Global Markets": "bg-green-100 text-green-800",
-      "Capital Markets": "bg-cyan-100 text-cyan-800",
+      "Cloud Computing": "bg-cyan-100 text-cyan-800",
       "Risk Management": "bg-red-100 text-red-800",
-      "AML/KYC": "bg-amber-100 text-amber-800",
-      "Core Banking": "bg-indigo-100 text-indigo-800",
-      "Transaction Banking": "bg-purple-100 text-purple-800",
+      "AML or KYC": "bg-amber-100 text-amber-800",
+      "Institutional Banking": "bg-indigo-100 text-indigo-800",
+      "Digital Banking": "bg-purple-100 text-purple-800",
       "Cash Management": "bg-teal-100 text-teal-800",
-      "Payments": "bg-rose-100 text-rose-800"
+      "Retail Banking": "bg-rose-100 text-rose-800"
     };
     
     return colors[category] || "bg-gray-100 text-gray-800";
@@ -356,9 +357,9 @@ function ArticleCard({ article, onView, getCategoryColor, getCountryColor, forma
             </Badge>
 
             {article.category && (
-              <Badge className={getCategoryColor(article.category)}>
+              <Badge className={getCategoryColor(toTitleCase(article.category))}>
                 <Tag className="h-3 w-3 mr-1" />
-                {article.category.replace(/_/g, ' ')}
+                {toTitleCase(article.category)}
               </Badge>
             )}
           </div>

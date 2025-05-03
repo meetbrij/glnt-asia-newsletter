@@ -97,7 +97,7 @@ export default function NewsletterForm({
                   {selectedArticles.slice(0, 3).map((article, index) => (
                     <div key={index} className="flex items-start gap-1">
                       <CheckCircle2 className="h-3 w-3 mt-0.5 flex-shrink-0" />
-                      <span className="truncate">{article.title}</span>
+                      <span>{article.title}</span>
                     </div>
                   ))}
                   {selectedArticles.length > 3 && (
