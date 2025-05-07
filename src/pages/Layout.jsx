@@ -1,102 +1,67 @@
 
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { User } from "@/api/entities";
 import { 
   BarChart3, 
   FileText, 
   CheckSquare,
   Mail,
   ChevronDown,
+  LogOut,
   User as UserIcon
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { QuerySupabase } from '@/components/utils/supabaseClient';
 
 export default function Layout({ children, currentPageName }) {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+
   const [isNewsLetterPage, setIsNewsletterPage] = useState(false);
+  const [displayName, setDisplayName] = useState("");
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const userData = await User.me();
-        setUser(userData);
-        
-        // Redirect based on role if on wrong page
-        console.log("page name: ", currentPageName);
-        if (userData.role === "reader" && !currentPageName.startsWith("Newsletter")) {
-          navigate(createPageUrl("Newsletter"));
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        // If we can't get the user data, they're not logged in
-        // User.login(); // This will redirect to the built-in login page
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUser();
-  }, [currentPageName, navigate]);
-
-  // Get user initials for avatar
-  const getUserInitials = () => {
-    if (!user?.full_name) return "U";
-    return user.full_name
-      .split(" ")
-      .map(n => n[0])
-      .join("")
-      .toUpperCase()
-      .substring(0, 2);
-  };
-
-  const handleLogout = async () => {
-    await User.logout();
-    window.location.reload(); // Reload to trigger login flow
-  };
-
-  // Current view (analyst, manager, reader)
-  const [currentView, setCurrentView] = useState("analyst");
-
-  useEffect(() => {
-    // if (user) {
-    //   setCurrentView(user.role || "analyst");
-    // }
     console.log("page name: ", currentPageName);
+    fetchUserSession();
     if (currentPageName === "Newsletter") {
       setIsNewsletterPage(true);
     }
   }, []);
 
-  // Loading state
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex">
-        <div className="hidden md:block w-[256px] bg-[#e8eeff] p-4">
-          <Skeleton className="h-10 w-10 rounded-full mb-6" />
-          <Skeleton className="h-4 w-40 mb-8" />
-          <div className="space-y-3">
-            <Skeleton className="h-8 w-full" />
-            <Skeleton className="h-8 w-full" />
-            <Skeleton className="h-8 w-full" />
-            <Skeleton className="h-8 w-full" />
-          </div>
-        </div>
-        <div className="flex-1">
-          <Skeleton className="h-6 w-96 m-8" />
-          <div className="p-8">
-            <Skeleton className="h-40 w-full mb-6" />
-            <Skeleton className="h-80 w-full" />
-          </div>
-        </div>
-      </div>
-    );
+  const handleLogout = async () => {
+    const { error } = await QuerySupabase.auth.signOut();
+    if (error) {
+      console.error('Error logging out:', error.message);
+    } else {
+      // Optional: redirect to login page or home
+      window.location.href = '/login';
+    }
+  };
+
+  const fetchUserSession = async () => {
+    const {
+      data: { session },
+      error,
+    } = await QuerySupabase.auth.getSession();
+  
+    if (error) {
+      console.error("Error fetching session:", error);
+      return;
+    }
+  
+    const user = session?.user;
+    console.log("user info: ", user, email, displayName)
+    if (user) {
+      setEmail(user.email || "");
+      setDisplayName(user.user_metadata?.display_name || user.email.split("@")[0]); // Adjust based on how your metadata is structured
+    }
+  };
+
+  // Don't show layout for Newsletter page
+  if (currentPageName === "Newsletter") {
+    return children;
   }
 
   return (
@@ -146,46 +111,26 @@ export default function Layout({ children, currentPageName }) {
               to="ManagerDashboard" 
               icon={<BarChart3 className="w-5 h-5" />} 
               label="Analytics View" 
-              current={currentPageName === "ManagerDashboard" || currentPageName === "ContentPerformance" || currentPageName === "ReaderEngagement"}
+              current={currentPageName === "ManagerDashboard"}
             />
           </nav>
         </div>
         
         {/* View Switcher */}
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-indigo-100">
-          <div className="mb-2 text-xs text-indigo-800 font-medium">
-            Switch View
-          </div>
-          <div className="flex bg-white rounded-md p-1 mb-4">
-            <ViewButton 
-              label="Analyst" 
-              active={currentView === "analyst"} 
-              onClick={() => setCurrentView("analyst")}
-            />
-            <ViewButton 
-              label="Manager" 
-              active={currentView === "manager"} 
-              onClick={() => setCurrentView("manager")}
-            />
-            <ViewButton 
-              label="Reader" 
-              active={currentView === "reader"} 
-              onClick={() => setCurrentView("reader")}
-            />
-          </div>
-          
+
           {/* User Profile */}
-          <div className="flex items-center justify-between">
+          {email && <div className="flex items-center justify-between">
             <div className="flex items-center">
               <Avatar className="h-9 w-9 bg-indigo-100 text-indigo-600 border border-indigo-200">
-                <AvatarFallback>{getUserInitials()}</AvatarFallback>
+                <AvatarFallback>{'@'}</AvatarFallback>
               </Avatar>
               <div className="ml-2">
                 <div className="text-sm font-medium text-indigo-900">
-                  {user?.full_name?.split(' ').slice(0, 2).join(' ') || "User"}
+                  {displayName}
                 </div>
                 <div className="text-xs text-indigo-700 truncate max-w-[180px]">
-                  {user?.email || "user@example.com"}
+                  {email}
                 </div>
               </div>
             </div>
@@ -193,11 +138,11 @@ export default function Layout({ children, currentPageName }) {
               variant="ghost" 
               size="sm" 
               className="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 p-1 h-auto"
-              onClick={() => {}}
+              onClick={handleLogout}
             >
-              <ChevronDown className="h-4 w-4" />
+              <LogOut className="h-4 w-4" />
             </Button>
-          </div>
+          </div>}
         </div>
       </aside>) : (<></>)}
       
@@ -221,19 +166,6 @@ function NavLink({ to, icon, label, current }) {
       <span className="mr-3">{icon}</span>
       <span className={current ? 'font-medium' : ''}>{label}</span>
     </Link>
-  );
-}
-
-function ViewButton({ label, active, onClick }) {
-  return (
-    <button
-      className={`flex-1 py-1 px-3 text-sm rounded-md transition-colors ${
-        active ? 'bg-indigo-100 text-indigo-700 font-medium' : 'text-indigo-900 hover:bg-indigo-50'
-      }`}
-      onClick={onClick}
-    >
-      {label}
-    </button>
   );
 }
 

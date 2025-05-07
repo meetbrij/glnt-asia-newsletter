@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { motion } from "framer-motion";
@@ -30,7 +30,7 @@ import NewsCard from "../components/analyst/NewsCard";
 import { 
   fetchArticles, 
   updateArticle, 
-  createNewsletter 
+  createNewsletter
 } from "../components/utils/supabase";
 
 const COUNTRIES = ["Australia", "Japan", "Hong Kong", "Singapore", "Malaysia", "Indonesia", "Thailand", "Philippines"];
