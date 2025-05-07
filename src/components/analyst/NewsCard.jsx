@@ -38,7 +38,7 @@ export default function NewsCard({ article, onSelect, isSelected, hideCheckbox=f
   const getCategoryColor = (category) => {
     const colors = {
       "Wealth Management": "bg-violet-100 text-violet-800",
-      "Global Markets": "bg-green-100 text-green-800",
+      "Derivatives": "bg-green-100 text-green-800",
       "Digital Banking": "bg-blue-100 text-blue-800",
       "Cloud Computing": "bg-cyan-100 text-cyan-800",
       "Retail Banking": "bg-red-100 text-red-800",

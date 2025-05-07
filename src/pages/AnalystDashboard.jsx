@@ -125,8 +125,6 @@ export default function AnalystDashboard() {
     
     if (activeTab === "selected") {
       result = result.filter(article => article.selected_for_newsletter);
-    } else if (activeTab === "featured") {
-      result = result.filter((_, index) => index % 3 === 0);
     }
     
     if (searchText) {
@@ -285,7 +283,6 @@ export default function AnalystDashboard() {
                   {articles?.filter(a => a.selected_for_newsletter)?.length || 0}
                 </Badge>
               </TabsTrigger>
-              <TabsTrigger value="featured">Featured</TabsTrigger>
             </TabsList>
           </Tabs>
           
