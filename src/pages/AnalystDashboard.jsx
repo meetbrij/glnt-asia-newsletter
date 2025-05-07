@@ -34,7 +34,7 @@ import {
 } from "../components/utils/supabase";
 
 const COUNTRIES = ["Australia", "Japan", "Hong Kong", "Singapore", "Malaysia", "Indonesia", "Thailand", "Philippines"];
-const CATEGORIES = ["Wealth Management", "Global Markets", "Compliance", "Digital Banking", "Retail Banking", "Institutional Banking", "Cloud Computing", "Corporate Banking"];
+const CATEGORIES = ["Wealth Management", "Derivatives", "Compliance", "Digital Banking", "Retail Banking", "Institutional Banking", "Cloud Computing", "Corporate Banking"];
 
 export default function AnalystDashboard() {
   const [articles, setArticles] = useState([]);
@@ -113,8 +113,8 @@ export default function AnalystDashboard() {
         if(article.category == "wealth management or private banking") {
           article.category = "wealth management"
         }
-        if(article.category == "global markets or risk management") {
-          article.category = "global markets"
+        if(article.category == "structured products") {
+          article.category = "derivatives"
         }
         if(article.category == "AML or KYC") {
           article.category = "compliance"
