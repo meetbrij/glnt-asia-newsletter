@@ -99,6 +99,7 @@ export async function createNewsletter(newsletterData, articleIds) {
         title: newsletterData.title,
         description: newsletterData.description,
         publishDate: newsletterData.publishDate || new Date().toISOString(),
+        bannerImageUrl: newsletterData.bannerImageUrl,
         views: 0,
         uniqueReaders: 0,
         articles: articleIds // array of article IDs

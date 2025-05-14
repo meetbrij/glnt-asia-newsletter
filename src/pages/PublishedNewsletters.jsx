@@ -124,8 +124,8 @@ export default function PublishedNewsletters() {
                 <div className="bg-white shadow rounded-lg overflow-hidden">
                   <div className="relative aspect-[4] bg-gray-100">
                     <img
-                      src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
-                      alt="Banking"
+                      src={newsletter.bannerImageUrl || "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"}
+                      alt={newsletter.title || "Banking Newsletter"}
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute top-4 left-4 bg-white py-1 px-3 rounded-full shadow-sm">

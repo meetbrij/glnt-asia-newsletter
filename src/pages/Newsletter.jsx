@@ -167,10 +167,6 @@ export default function Newsletter() {
     return colors[category] || "bg-gray-100 text-gray-800";
   };
 
-  const getCountryImage = (country) => {
-    return COUNTRY_IMAGES[country] || DEFAULT_BANNER;
-  };
-
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -197,6 +193,10 @@ export default function Newsletter() {
   const date = newsletter?.publishDate 
     ? formatDate(newsletter.publishDate)
     : format(new Date(), "MMMM d, yyyy");
+
+  const currentBannerImage =activeTab === "all"
+                ? (newsletter?.bannerImageUrl || DEFAULT_BANNER)
+                : (COUNTRY_IMAGES[activeTab] || DEFAULT_BANNER);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -226,8 +226,8 @@ export default function Newsletter() {
       {/* Banner Image */}
       <div className="relative h-[300px] md:h-[400px] overflow-hidden">
         <img
-          src={activeTab === "all" ? DEFAULT_BANNER : getCountryImage(activeTab)}
-          alt={`Banking in ${activeTab === "all" ? "Asia Pacific" : activeTab}`}
+          src={currentBannerImage}
+          alt={newsletter?.title || `Banking in ${activeTab === "all" ? "Asia Pacific" : activeTab}`}
           className="w-full h-full object-cover"
         />
       </div>
