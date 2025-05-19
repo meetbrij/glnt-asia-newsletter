@@ -143,11 +143,11 @@ export async function getNewsletterArticles(articleIds) {
  * @returns {Object} - Updated newsletter
  */
 export async function incrementNewsletterViews(newsletterId) {
-  await QuerySupabase
-    .from('newsletter')
-    .update({})               // no direct payload
-    .eq('id', newsletterId)   // target the specific record
-    .increment('views');      // add 1 to the views column
+  const { data, error } = await QuerySupabase
+    .rpc('increment_newsletter_views', { p_id: newsletterId });
+
+  if (error) throw error;
+  return data;
 }
 
 /**
