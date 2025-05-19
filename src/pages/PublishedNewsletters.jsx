@@ -143,8 +143,11 @@ export default function PublishedNewsletters() {
                       <Badge className="bg-indigo-100 text-indigo-800 hover:bg-indigo-200">
                         {newsletter.id % 2 === 0 ? "Weekly" : "Monthly"}
                       </Badge>
-                      <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-200">
+                      <Badge className="bg-yellow-100 text-gray-800 hover:bg-yellow-200">
                         {newsletter.articles.length || 0} articles
+                      </Badge>
+                      <Badge className="bg-pink-100 text-gray-800 hover:bg-pink-200">
+                        {newsletter.views || 0} views
                       </Badge>
                     </div>
                     
